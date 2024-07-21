@@ -1,0 +1,5 @@
+Answer: 6200097462
+JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_gasPrice", "params": [], "id": 1}
+JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": "0x1718dfab6"}

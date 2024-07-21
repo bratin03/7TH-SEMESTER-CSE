@@ -1,0 +1,5 @@
+Total transactions from 0x328Ff6652cc4E79f69B165fC570e3A0F468fc903: 25
+JSON RPC Payload (Block): 
+{"jsonrpc": "2.0", "method": "eth_getTransactionCount", "params": ["0x328Ff6652cc4E79f69B165fC570e3A0F468fc903", "finalized"], "id": 1}
+JSON Response (Block): 
+{"jsonrpc": "2.0", "id": 1, "result": "0x19"}

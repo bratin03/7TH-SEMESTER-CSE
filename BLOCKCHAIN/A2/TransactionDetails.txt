@@ -1,0 +1,10 @@
+I. Transaction Hash: 0x93fd8ddd5e5f7103a1369d60715ca27d6113e66e3efe90c6a7383acda1fb0b2a
+II. From Address: 0x5d388d58dae954c602fc3f03f8ccbeb64189c7d5
+III. To Address: 0xad87bf1e27ab64af9473a64bbd1b556b67cbdbfb
+IV. Value Transferred: 100000000000000 Wei (0.0001 Ether)
+V. Gas Used: 21000
+VI. Gas Price: 9212331779 Wei (9.212331779e-09 Ether)
+VII. JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_getTransactionByHash", "params": ["0x93fd8ddd5e5f7103a1369d60715ca27d6113e66e3efe90c6a7383acda1fb0b2a"], "id": 1}
+VIII. JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": {"accessList": [], "blockHash": "0x85d404571a93ef93d1ce3934ef08b9ac1b026633ee17f48c200462e15710a0a5", "blockNumber": "0x648d2a", "chainId": "0xaa36a7", "from": "0x5d388d58dae954c602fc3f03f8ccbeb64189c7d5", "gas": "0x5208", "gasPrice": "0x225190703", "hash": "0x93fd8ddd5e5f7103a1369d60715ca27d6113e66e3efe90c6a7383acda1fb0b2a", "input": "0x", "maxFeePerGas": "0x3e8d4a00a", "maxPriorityFeePerGas": "0x2435580a", "nonce": "0x0", "r": "0xd3f342d3808cbe772d88c631e1ab61bf5d4ffcc4c9a97e4b22805cf79bba2aa3", "s": "0x435218958af1371e6c8857c80c42ee29e2b6f705973f9332c1ee2961b7660fc9", "to": "0xad87bf1e27ab64af9473a64bbd1b556b67cbdbfb", "transactionIndex": "0x33", "type": "0x2", "v": "0x1", "value": "0x5af3107a4000", "yParity": "0x1"}}

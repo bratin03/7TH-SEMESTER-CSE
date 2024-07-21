@@ -1,0 +1,5 @@
+I. Number of Peers (in Integer): 100
+II. JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "net_peerCount", "params": [], "id": 1}
+III. JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": "0x64"}

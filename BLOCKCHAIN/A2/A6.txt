@@ -1,0 +1,6 @@
+I. Value Transferred (in Wei, Integer): 100000000000000
+II. Gas Used (in Integer): 21000
+III. JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_getTransactionByHash", "params": ["0x9c155c9b20480e483c40573edca0bc7c0ffc19fc5bf05d859fbb0f0cd47799c7"], "id": 1}
+IV. JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": {"accessList": [], "blockHash": "0x14aa0757da52029f170dfc5fb7fb611837303ad6fcf9949b5270dc5a53027c46", "blockNumber": "0x63ef1e", "chainId": "0xaa36a7", "from": "0x328ff6652cc4e79f69b165fc570e3a0f468fc903", "gas": "0x5208", "gasPrice": "0xce773884e", "hash": "0x9c155c9b20480e483c40573edca0bc7c0ffc19fc5bf05d859fbb0f0cd47799c7", "input": "0x", "maxFeePerGas": "0x14f46b0400", "maxPriorityFeePerGas": "0xb2d05e00", "nonce": "0xc", "r": "0x1e62f8a4ef24ef3c48797f4b0620793226132fdcde39d690d98c88f84b683dca", "s": "0x4ba19aaddc55fdf6eeb2c4f93c2d9b9a9269f423c182a9ceade0e855a1dd427f", "to": "0xd7ff489a267d6310c68f2756991baf09204806f8", "transactionIndex": "0x5", "type": "0x2", "v": "0x1", "value": "0x5af3107a4000", "yParity": "0x1"}}

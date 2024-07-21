@@ -1,0 +1,5 @@
+Total transactions in block 0x4054F9: 18
+JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_getBlockTransactionCountByNumber", "params": ["0x4054F9"], "id": 1}
+JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": "0x12"}

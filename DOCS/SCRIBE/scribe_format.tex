@@ -1,0 +1,68 @@
+\documentclass[11pt,paper=a4,answers]{exam}
+\usepackage{graphicx,lastpage}
+\usepackage{upgreek}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{censor}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+
+\censorruledepth=-.2ex
+\censorruleheight=.1ex
+\hyphenpenalty 10000
+\usepackage[paperheight=10.5in,paperwidth=8.27in,bindingoffset=0in,left=0.8in,right=1in,
+top=0.7in,bottom=1in,headsep=.5\baselineskip]{geometry}
+\flushbottom
+\usepackage[normalem]{ulem}
+\renewcommand\ULthickness{2pt}
+\setlength\ULdepth{1.5ex}
+\renewcommand{\baselinestretch}{1}
+\pagestyle{empty}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={TOPIC NAME}
+    }
+\pagestyle{headandfoot}
+\headrule
+
+\runningheader{\footnotesize}
+{TOPIC NAME}
+\footrule
+\footer{\footnotesize}
+{\hrule width \textwidth height 1pt \vspace{1mm} Page \thepage\ of \numpages}
+{}
+
+\pointsinrightmargin
+\pointsdroppedatright
+\marksnotpoints
+\marginpointname{ \points}
+\pointformat{\boldmath\themarginpoints}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{tcolorbox}[colback=blue!10!white, colframe=gray!20!blue, width=\textwidth, boxrule=0.5mm, arc=0mm, auto outer arc]
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r}
+        \textbf{CS60203: Design Optimization of Computing Systems} & \textit{\today} \\
+    \end{tabular*}
+    \begin{center}
+        \textbf{\LARGE Topic Name}
+    \end{center}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r}
+        \textit{Instructor: Mainack Mondal} & \textit{Scribe-By: \textless Your Name \textgreater} \\
+    \end{tabular*}
+\end{tcolorbox}
+
+
+\vspace{2mm}
+
+\noindent
+Your scribe starts here \ldots
+\end{document}

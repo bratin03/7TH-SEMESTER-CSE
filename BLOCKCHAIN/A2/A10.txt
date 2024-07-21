@@ -1,0 +1,6 @@
+Sender Address: 0x5d388d58dae954c602fc3f03f8ccbeb64189c7d5
+
+Receiver Address: 0xad87bf1e27ab64af9473a64bbd1b556b67cbdbfb
+
+Transaction Hash: 0x93fd8ddd5e5f7103a1369d60715ca27d6113e66e3efe90c6a7383acda1fb0b2a
+Check status at: https://sepolia.etherscan.io/tx/0x93fd8ddd5e5f7103a1369d60715ca27d6113e66e3efe90c6a7383acda1fb0b2a

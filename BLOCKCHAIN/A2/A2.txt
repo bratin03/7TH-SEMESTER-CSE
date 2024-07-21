@@ -1,0 +1,5 @@
+Answer: 6601263
+JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1}
+JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": "0x64ba2f"}

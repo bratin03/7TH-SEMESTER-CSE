@@ -1,0 +1,5 @@
+Answer: 1979173467449875829
+JSON RPC Payload:
+{"jsonrpc": "2.0", "method": "eth_getBalance", "params": ["0x328Ff6652cc4E79f69B165fC570e3A0F468fc903", "latest"], "id": 1}
+JSON Response:
+{"jsonrpc": "2.0", "id": 1, "result": "0x1b776fc8543a5d75"}
