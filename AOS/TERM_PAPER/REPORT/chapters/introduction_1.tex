@@ -1,0 +1,57 @@
+\section{Introduction}
+
+\subsection{Overview: What is Tectonic?}\label{sec:intro}
+
+Tectonic\cite{tectonic} is Meta's (formerly Facebook) exabyte-scale distributed filesystem, developed to meet the extensive data storage demands of Meta's services. Unlike specialized single-tenant filesystems, Tectonic functions as a general-purpose, multi-tenant solution, capable of serving various types of tenants with diverse data requirements.
+
+A core objective of Tectonic's architecture is to ensure high scalability and efficient resource utilization. Its multi-tenant design enables Meta to consolidate services previously managed in specialized environments, simplifying operations and reducing maintenance costs. Within Tectonic, each tenant can implement specific optimizations, achieving performance levels comparable to custom filesystems while benefiting from shared infrastructure.
+
+Notably, Tectonic is intended solely for Meta's internal services and is not designed for external use. This focus allows Meta to tailor the filesystem to its unique requirements and optimize it specifically for its workloads, without the risks posed by potentially misbehaving external tenants, aside from unintended issues.
+
+\subsection{Meta's Existing Storage Systems}\label{sec:existing}
+
+Meta's storage infrastructure mainly serves two types of tenants: Blob Storage and Data Warehouse.
+
+\subsubsection{Blob Storage}\label{sec:blob_storage}
+
+Blob Storage is used for large, often unstructured binary data like images, videos, and documents, ranging in size from small files to gigabytes. Blobs require low-latency read and write operations for user-facing applications. Based on access frequency, blobs are categorized into:
+
+\begin{itemize}\label{blob_categories}
+    \item \textbf{Hot}: Frequently accessed blobs (e.g., recently uploaded photos).
+    \item \textbf{Warm}: Less frequently accessed blobs (e.g., older photos).
+\end{itemize}
+
+\subsubsection*{Hot Blob Storage}\label{sec:hot_blob_storage}
+
+Hot blobs were stored in Haystack\cite{haystack}, a distributed system designed to handle large volumes of data efficiently at scale. Haystack employs a flat, key-value model that minimizes metadata storage by storing blob data contiguously, reducing disk I/O and enhancing retrieval performance. With a replication factor of 3, each blob is replicated across three nodes to ensure fault tolerance and high availability. The core design principle is to eliminate unnecessary metadata, as it is not critical for blob storage, thus reducing disk seeks.
+
+\subsubsection*{Issues with Haystack}\label{sec:haystack_issues}
+One of the major limitations of Haystack was its high IOPS (Input/Output Operations Per Second) requirements. Originally, Meta's Engineering team designed the system with a replication factor of 3.6, which included 3 for replication and an additional 1.2x for RAID6 redundancy. However, in practice, the devices struggled to meet the IOPS demands, necessitating the addition of more devices to keep up with the load. This issue arose due to advances in disk density, while IOPS capabilities remained relatively unchanged. As a result, the effective replication factor grew to 5.3x, with a significant portion of the storage capacity being underutilized.
+
+\subsubsection*{Warm Blob Storage}\label{sec:warm_blob_storage}
+Meta used f4\cite{f4}, a highly efficient distributed filesystem, to store warm blobs. f4 employs Reed-Solomon erasure coding\cite{ReedSolomon1960} for fault tolerance, which enables data redundancy without the significant storage overhead associated with traditional replication. This approach ensures both durability and scalability, making f4 well-suited for large-scale warm blob storage.
+
+\subsubsection*{Issues with f4}\label{sec:f4_issues}
+Although f4 proved effective for warm blob storage, the large volume of warm blob data required a significant number of devices. However, the issue arose in that these devices also provided high IOPS capacity, which was unnecessary for the relatively low I/O demands of warm blobs. As a result, a substantial portion of the IOPS capacity remained underutilized, leading to inefficiencies in resource allocation.
+
+
+\subsubsection{Data Warehouse}\label{sec:data_warehouse}
+A Data Warehouse stores structured data, such as user activity logs, social graph snapshots, map-reduce outputs, and other analytics data. It is typically accessed via batch processing jobs with read-heavy workloads, infrequent writes, and less emphasis on latency. Parallel processing models often lead to multiple files in the same directory being read together.
+
+Meta's Data Warehouse storage relied on the Apache Hadoop Distributed File System (HDFS)\cite{hdfs}, which is designed for large file storage across multiple machines. HDFS uses a single NameNode for metadata and multiple DataNodes for file storage, optimized for large files and streaming reads, making it ideal for batch processing workloads.
+
+
+\subsubsection*{Issues with HDFS}\label{sec:hdfs_issues}
+ Capacity of HDFS was constrained by the NameNode's metadata storage, which could not scale to meet Meta's increasing data demands. To address this, Meta's Engineering team partitioned data across multiple HDFS clusters, each with its own NameNode. This solution introduced operational complexity, resembling a 2D-bin packing problem, with one dimension representing data size and the other throughput requirements. The partitioning strategy proved inefficient, requiring manual load balancing across clusters and making system management and scalability challenging. In short, scaling HDFS became an unsustainable solution for Meta's expanding data needs.
+
+
+\subsection{Design Goals for Tectonic}\label{sec:design_goals}
+The limitations of existing storage systems highlighted several key design challenges for Tectonic:
+\begin{itemize}\label{design_challenges}
+    \item \textbf{Scalability to Exabytes}: Tectonic had to efficiently store and serve massive amounts of metadata to meet Meta's exabyte-scale storage needs.
+    \item \textbf{Performance Isolation}: Tectonic needed to ensure performance isolation between tenants, preventing resource contention while also allowing tenants to utilize surplus resources from others.
+    \item \textbf{Tenant-Specific Optimizations}: Tectonic had to provide flexibility for tenants to implement custom optimizations typically found in specialized filesystems.
+\end{itemize}
+
+\subsection{Existing Solutions}\label{sec:existing_solutions}
+Several existing storage solutions have been explored to address similar challenges. Federated HDFS\cite{hadoop_federation} and Windows Azure Storage (WAS)\cite{azure} focus on merging smaller storage clusters into larger ones, utilizing multiple independent namespaces while sharing data nodes. However, this still leads to a bin-packing problem at the namespace level, where it is difficult to determine where to place specific data. Solutions like Ceph\cite{ceph} and Flat Datacenter Storage (FDS)\cite{fds} hash data objects to determine their locations, increasing the range of hash functions to scale. However, this approach requires updating the hash function during each data relocation, which can be highly costly in large-scale systems.

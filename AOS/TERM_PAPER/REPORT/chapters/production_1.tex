@@ -1,0 +1,31 @@
+\section{Tectonic in Production}
+
+Meta's Tectonic Filesystem supports diverse workloads, including blob storage and data warehousing at exabyte scale. However, certain tenants like Key-Value stores, Deployment Management Systems, and legacy systems don’t use Tectonic due to specialized storage needs. Some services access Tectonic indirectly through major tenants, such as the data warehouse, to avoid the cost of developing individual client libraries. 
+
+\subsection{Exabyte-Scale Multitenant Clusters}
+
+Tectonic is designed for efficient operation at an exabyte scale, supporting diverse workloads under a unified storage system. For example, a typical Tectonic cluster manages approximately 1250 PB of data, representing about 70\% of its capacity, and handles around 10.7 billion files and 15 billion blocks. This scale demonstrates Tectonic's ability to support high-volume, varied workloads effectively.
+
+\subsection{Efficiency from Storage Consolidation}
+
+By consolidating blob storage and data warehouse services, Tectonic enhances resource utilization and manages workload spikes more efficiently. For instance, surplus IOPS from blob storage can be redirected to support bandwidth-intensive spikes from data warehouse workloads. This consolidation reduces the need for separate, overprovisioned systems, optimizing disk usage and lowering overall storage costs.
+
+\subsection{Metadata Management and Load Balancing}
+
+Tectonic manages metadata load spikes efficiently by using load-balancing techniques within its metadata store to maintain high performance. Around 1\% of Name layer shards may hit peak queries per second (QPS) during load surges, but Tectonic handles these spikes with retry mechanisms to sustain responsiveness. Additionally, Tectonic co-designs with the data warehouse to mitigate metadata hotspots from frequent, simultaneous file access. For example, the \texttt{list-files} API provides both file IDs and names, allowing compute engines to distribute file IDs directly to worker nodes, reducing directory query loads on the metadata store.
+
+\subsection{Design Trade-offs}
+
+Tectonic’s design focuses on simplicity and efficiency but involves certain trade-offs.
+
+For \textbf{reconstruction load management}, Tectonic employs contiguous Reed-Solomon (RS) encoding, allowing most reads to be single-disk IO. However, reconstruction reads triggered by failures require higher IO, leading to "reconstruction storms." Tectonic mitigates this by capping reconstructed reads at 10\%, balancing performance with resource usage according to the cluster's workload.
+
+\textbf{Direct access to storage nodes} improves efficiency by avoiding extra network hops, although it adds complexity since Client Library bugs can impact application binaries. Latency-sensitive remote requests are routed through a stateless proxy, optimizing cross-datacenter data access.
+
+\textbf{Metadata latency and partitioning} introduce additional trade-offs. Metadata is stored in a sharded key-value store, which increases latency compared to in-memory storage, prompting optimizations like parallelized file renames. The hash-partitioned design limits recursive directory listing and aggregate space usage queries, which are handled through periodic space aggregation.
+
+These trade-offs enable Tectonic to support scalable, exabyte-level storage while delivering robust performance for diverse workloads.
+
+\medskip
+
+In summary, Tectonic effectively addresses Meta’s large-scale storage requirements through a balance of operational simplicity and resource efficiency, allowing it to replace multiple specialized storage systems and support exabyte-scale, multitenant environments.

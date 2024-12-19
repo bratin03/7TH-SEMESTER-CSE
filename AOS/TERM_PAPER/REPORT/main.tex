@@ -1,0 +1,88 @@
+\documentclass[12pt]{report}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{natbib} % for bibliography
+\usepackage{titlesec} % to customize section spacing
+\usepackage{cleveref}
+
+% Algorithm package
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\setstretch{1.5}
+
+% Reduce spacing between sections
+\titlespacing*{\section}{0pt}{0.5em}{0.5em} % [left, before, after]
+\titlespacing*{\subsection}{0pt}{0.5em}{0.5em}
+\titlespacing*{\subsubsection}{0pt}{0.5em}{0.5em}
+
+% Reduce space between items in itemize
+\usepackage{enumitem}
+\setlist[itemize]{topsep=0pt, itemsep=0pt, partopsep=0pt, parsep=0pt}
+
+\begin{document}
+\sloppy
+\begin{titlepage}
+    \centering
+    % Title
+    \vspace*{1.5in}
+    {\Huge\bfseries Term Paper Report\\[1.5em]}
+    % Course Information
+    {\large \textbf{Course Name:} \textit{Advances in Operating Systems Design}}\\[0.5em]
+    {\large \textbf{Course Code:} \textit{CS60038}}\\
+    \vspace{1in}
+    % Author Information
+    {\large \textbf{Submitted By:}}\\[1em]
+    {\large Bratin Mondal\\\textbf{Roll No.:} 21CS10016}\\[1em]
+    {\large Datta Ksheeraj\\\textbf{Roll No.:} 21CS30037}\\
+    \vspace{1in}
+    % Institution Details
+    {\large Department of Computer Science and Engineering}\\[0.5em]
+    {\large Indian Institute of Technology Kharagpur}\\
+    \vfill
+    % Date of Submission
+    {\large \textbf{Date of Submission:} \today}
+\end{titlepage}
+
+\begin{abstract}
+This term paper explores two advanced technologies in the field of data management and storage: Facebook's Tectonic Filesystem and Google's Monarch. The Tectonic Filesystem is engineered for efficiency at exascale, designed to manage vast amounts of data with exceptional performance and reliability. In contrast, Monarch serves as a globally distributed, highly available time-series database, supporting many of Google's critical applications by enabling low-latency queries and efficient storage of telemetry and monitoring data at an unparalleled scale.
+
+For both technologies, we first examine the motivation behind their design, followed by an analysis of their technical and practical aspects. Finally, we provide our evaluation and insights based on a critical assessment of the respective papers.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\chapter{Facebook's Tectonic Filesystem: Efficiency from Exascale}
+
+\input{chapters/introduction_1.tex}
+
+\input{chapters/design_1.tex}
+
+\input{chapters/production_1.tex}
+
+\input{chapters/evaluation_1.tex}
+
+\chapter{Monarch: Google's Planet-Scale In-Memory Time Series Database}
+
+\input{chapters/chapter1.tex}
+
+\input{chapters/chapter2.tex}
+
+\input{chapters/chapter3.tex}
+
+\input{chapters/chapter4.tex}
+
+\input{chapters/chapter5.tex}
+
+\input{chapters/chapter6.tex}
+
+\input{chapters/chapter7.tex}
+
+% Bibliography
+\bibliographystyle{plain}
+\bibliography{references}  % assuming references.bib is the name of your .bib file
+
+\end{document}

@@ -1,0 +1,54 @@
+% \chapter{The Problem}
+
+% \label{Chapter2} % Reference label
+
+% \lhead{Chapter 2. \emph{The Problem}} % Header for each page
+
+\section{The Problem}
+
+\subsection{Arrival of Borgmon}
+
+\subsubsection{Initial Problem}
+Google's infrastructure comprised numerous clusters, each hosting thousands of servers running various applications. The complexity and scale of these clusters made it challenging to monitor system health effectively. Existing monitoring solutions lacked the ability to provide real-time insights into the status of individual servers, services, and applications. This often resulted in:
+\begin{itemize}
+    \item Need to get a time-based collection of data.
+    \item Difficulty in identifying failing or underperforming nodes.
+    \item Slow response times to incidents due to limited visibility.
+    \item Overwhelming volumes of alerts, many of which were not actionable.
+\end{itemize}
+
+\subsubsection{Borgmon Solution\cite{Borgmon}}
+Borgmon was designed as a time-series database to provide comprehensive cluster monitoring by implementing:
+\begin{itemize}
+    \item \textbf{Real-time Monitoring:} Borgmon enabled real-time tracking of system health, resource usage, and performance metrics across all nodes in a cluster.
+    \item \textbf{Centralized Data Collection:} It centralized data collection from all servers, allowing for a unified view of the health of the entire infrastructure.
+    \item \textbf{Intelligent Alerting:} The system incorporated intelligent alerting mechanisms that reduced noise by prioritizing alerts based on severity and context, thus allowing engineers to focus on critical issues.
+\end{itemize}
+
+\subsection{Arrival of Monarch\cite{50652}}
+
+Google shifted from Borgmon to Monarch to address the growing complexity and scale of its monitoring needs, especially as its infrastructure became more distributed and global. Below are the key reasons behind this shift:
+
+\begin{itemize}
+    \item \textbf{Scalability and Performance}
+    \begin{itemize}
+        \item Borgmon was originally designed to monitor Borg, Google’s cluster manager, primarily handling a centralized monitoring model.
+        \item As Google’s infrastructure expanded, including global data centers and cloud-based services, Borgmon struggled to scale effectively also making it difficult for engineers to run Borgmon reliably.
+        
+    \end{itemize}
+    
+
+    \item \textbf{Semantic ambiguity}
+    \begin{itemize}
+        \item Each team created their own Borgmon instance creating their own configuration and variables creating semantic ambiguity
+    \end{itemize}
+
+    \item \textbf{No support for Complex Distribution types}
+    \begin{itemize}
+        \item Some monitoring actually requires complex histograms from which other statistical information is drawn out. This is not supported by Borgmon i.e. We cant store whole of histogram in the records we store
+    \end{itemize}
+\end{itemize}
+
+
+
+

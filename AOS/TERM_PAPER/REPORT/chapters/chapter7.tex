@@ -1,0 +1,16 @@
+% \chapter{My Observations}
+
+% \label{Chapter7} % Reference label
+
+% \lhead{Chapter 7. \emph{My Observations}} % Header for each page
+
+\section{Evaluation}
+
+While Monarch prioritizes high availability and partition tolerance, the trade-off with data consistency could lead to stale reads. This seemed more bold decision to me, instead we should be using better consistency model which does different things based on situation.
+
+For this I thought of implementing a Reinforcement Learning Model which slowly learns the data it handles and performs accordingly.
+
+Also user was given choice to choose the number of replicas and level of granularity. But when scalability is considered and lot of users operate at same time they might over estimate the usage which unnecessarily creates extra load if all created maximum number of replicas.
+
+For this the control given to users must be looked into again, there must be control mechanisms asking users about the data they are going to handle and based on that the system should have some percentage of controlling. Even complete control to the system itself is a waste.
+

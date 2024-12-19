@@ -1,0 +1,49 @@
+% \chapter{Organization of Data and Load Balancing}
+
+% \label{Chapter5} % Reference label
+
+% \lhead{Chapter 5. \emph{Organization of data Load Balancing}} % Header for each page
+
+\section{Organization of Data and Load Balancing}
+
+\subsection{Data Organization and Load Balance}
+
+Intra-zone load balancing in Monarch is a strategy used to ensure efficient data storage and distribution across leaf nodes within a zone, minimizing load and optimizing performance. Here’s an in-depth look at how this process works:
+
+\begin{itemize}
+    \item \textbf{Schema and Lexicographic Sharding}
+    \begin{itemize}
+        \item \textbf{Data Organization:} Data is organized in a table schema consisting of a target schema and a metric schema.
+        \item \textbf{Sharding by Target:} Only the key columns associated with the target schema are used for sharding data lexicographically. This approach groups all time series for a single target together, which minimizes the ingestion fanout, allowing a single message to carry data for multiple metrics for the same target. As a result:
+        \begin{itemize}
+            \item Each target's data is only sent to a few (up to three) leaf replicas.
+            \item This setup scales the zone horizontally by adding more leaf nodes and simplifies query processing by limiting it to a smaller subset of leaf nodes.
+        \end{itemize}
+        \item \textbf{Intra-Target Joins:} Common joins between metrics for the same target can be processed within the leaf node, reducing query complexity and making them faster.
+    \end{itemize}
+
+    \item \textbf{Replication Flexibility}
+    \begin{itemize}
+        \item \textbf{Replication Policy:} Monarch allows users to select the number of replicas per target (ranging from 1 to 3), enabling a trade-off between availability and storage cost.
+        \item \textbf{Granularity Control:} Users can choose to retain different levels of data detail for each replica, such as retaining only a fine-grained view on one replica and a coarser view on others.
+        \item \textbf{Individual Assignment of Replicas:} Each target range replica is assigned independently to avoid overloading a single leaf node, ensuring no leaf node holds multiple replicas of the same range.
+        \item \textbf{Distribution Across Failure Domains:} Leaves are distributed across clusters or failure domains. The range assigner ensures replicas of the same range are stored in different domains to enhance fault tolerance.
+    \end{itemize}
+
+    \item \textbf{Range Assigner and Load Balancing}
+    \begin{itemize}
+        \item \textbf{Load Monitoring and Adjustment:} The range assigner actively balances the load by moving, splitting, or merging ranges as needed based on CPU load and memory usage across leaf nodes.
+        
+    \end{itemize}
+
+    \item \textbf{Ensuring Data Availability}
+    \begin{itemize}
+        \item \textbf{Simultaneous Data Collection:} During the transfer process, both the source and destination leaves temporarily collect and log data for range $R$ to avoid any data loss and ensure continuous availability.(\textbf{Interesting optimisation})
+        \item \textbf{Direct Updates from Leaves:} Leaves keep leaf routers informed about range assignments, rather than relying on the range assigner for updates(\textbf{Interesting optimisation}). This:
+        \begin{itemize}
+            \item Ensures data integrity, as leaves are the main storage units.
+            \item Allows the system to continue working smoothly if the range assigner has a temporary failure.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+

@@ -1,0 +1,15 @@
+\section{Evaluation}
+
+As Tectonic is designed for Meta's internal use, it does not implement many of the semantics required by clients. Instead, it leaves these responsibilities to developers, who are expected to implement them at a higher level while using Tectonic. This design choice allows Tectonic to be more efficient and flexible. However, there are some design choices that are questionable and not explicitly clarified in the paper.
+
+\begin{itemize}
+    \item \textbf{Token-based single writer:} The approach of using a token to ensure only one writer can write at a time could lead to deadlock situations if writers alternatively attempt to write to the same file. The paper does not explain how this situation is handled, though it is likely addressed at a higher level by the developers. An alternative could have been to use a lease mechanism, where the writer holds the lease for a fixed time, with forced relinquishment if the lease is not renewed. This would introduce some delay in the event of a writer crash but would be more robust.
+    
+    \item \textbf{Partial Block Quorum Appends:} The paper describes blob storage tenants waiting for acknowledgment from a quorum of storage nodes, claiming that this provides low latency. However, the handling of writes that are not acknowledged by nodes outside the quorum is not discussed. It is unclear whether this information is stored in the metadata, allowing clients to read only from the nodes within the quorum, or if the client can read some stale data in the interest of low latency. The relaxed consistency model would likely improve performance, but if consistency is a concern, the system should have a mechanism to handle partial writes.
+
+    One option would be to maintain a list of stale chunks of nodes and prevent clients from reading from them. While this would add complexity to the system, it would offer better consistency. It would also allow later writes to be processed even if earlier writes are incomplete at some nodes. This approach would enable clients to send requests to all nodes and wait for a quorum response. However, maintaining an individual list of stale chunks for each node would introduce additional complexity and overhead.
+
+    Another approach would be to serialize writes at each node, maintaining only a list of stale nodes rather than stale chunks. While this avoids the complexity of tracking stale chunks, it would introduce latency since further writes could only proceed on non-stale nodes. This would reduce the effectiveness of partial block quorum appends, as writes would be blocked if any node is stale. This approach would add additional latency to the system.
+    
+    The exact mechanism used by Tectonic is not described in the paper, so it is unclear how the system handles partial writes and stale data. The paper should have provided more details on this aspect of the system.
+\end{itemize}

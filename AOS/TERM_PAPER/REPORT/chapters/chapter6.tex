@@ -1,0 +1,50 @@
+% \chapter{Querying}
+
+% \label{Chapter6} % Reference label
+
+% \lhead{Chapter 6. \emph{Querying}} % Header for each page
+
+\section{Querying}
+
+\subsection{Query Execution}
+
+In Monarch, there are two types of queries:
+
+\textbf{Ad hoc Queries}
+These are one-time queries from users outside the system.
+
+\textbf{Standing Queries}
+These are periodic queries whose results are stored back in Monarch. Standing queries are used to generate alerts or pre-process data for faster and more cost-effective access later. They can be processed at either the regional zone level or the global root level, based on the type of data and query requirements. Most standing queries are handled at the zone level, making them more efficient and resilient to network issues.
+
+\subsubsection{Query Tree and Execution Levels}
+Queries are processed in a three-level hierarchy:
+\begin{itemize}
+    \item \textbf{Root Mixer:} Receives the query and distributes it to zone mixers.
+    \item \textbf{Zone Mixers:} Send the query to relevant leaf nodes based on an index.
+    \item \textbf{Leaf Nodes:} Process the data closest to the source.
+\end{itemize}
+Each query is executed only at the necessary levels, which optimizes processing. The root node checks security, access control, and can rewrite queries for efficiency. Lower levels (leaves and mixers) stream data upwards, where higher levels combine results and manage the flow of data with rate control.
+
+\subsubsection{Replica Resolution}
+Data is often replicated, and replicas may vary in quality (e.g., completeness and time coverage). For accurate results, zone mixers resolve which replica is best based on quality criteria and assign target ranges to specific leaves for processing.
+
+\subsubsection{User Isolation}
+Monarch is a shared system, so resources are divided among users. Each user’s queries are limited in memory and CPU through cgroups, ensuring fair use.
+
+\subsubsection{Query Pushdown}
+Monarch minimizes data transfer by processing as much of the query as possible at the lowest level. This is called “query pushdown” and improves speed by:
+\begin{itemize}
+    \item Reducing the amount of data transferred to higher levels.
+    \item Allowing more concurrent processing.
+\end{itemize}
+For example, if a query only involves data from one zone, it can be fully processed there without needing root-level involvement. This pushdown approach makes 95\% of standing queries complete within the zone, which also prevents cross-region data traffic and reduces latency.
+
+\subsubsection{Specific Operations at Lower Levels}
+Some queries, like \texttt{group by} or \texttt{join}, are pushed to the leaf level when possible, where they process data within the smallest target ranges. For instance, if data for a specific target (like a task) remains within one leaf, that leaf can complete the operation, which reduces work for higher-level nodes.
+
+\subsection{Result Aggregation}
+\begin{itemize}
+    \item Leaf Nodes process data closest to the source. They handle their assigned "target range" and perform basic filtering and aggregation to reduce data before sending it up.
+    \item Zone Mixers gather results from multiple leaf nodes in their region. They combine and further aggregate data, then send only summarized information to the root mixer.
+    \item Root Mixer collects data from zone mixers. It completes any remaining aggregation, checks security, and applies final optimizations.
+\end{itemize}
